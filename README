@@ -1,7 +1,1 @@
-echo "# SummerGamePractice_WorldOfSeasons" >> README.md
-git init
-git add README.md
-git commit -m "first commit"
-git branch -M main
-git remote add origin https://github.com/StephMCodes/SummerGamePractice_WorldOfSeasons.git
-git push -u origin main
+This is a game I made during summer 2023 to practice.
