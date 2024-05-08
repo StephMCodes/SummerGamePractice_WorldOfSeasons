@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.9.34701.34
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "World_Of_Seasons", "World_Of_Seasons\World_Of_Seasons.csproj", "{56746AF2-1DAF-4705-AD44-C62AE65DA503}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{56746AF2-1DAF-4705-AD44-C62AE65DA503}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{56746AF2-1DAF-4705-AD44-C62AE65DA503}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{56746AF2-1DAF-4705-AD44-C62AE65DA503}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{56746AF2-1DAF-4705-AD44-C62AE65DA503}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {9552A3FF-F6A4-4702-83D6-7B21072C6E21}
+	EndGlobalSection
+EndGlobal
