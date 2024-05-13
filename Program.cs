@@ -9,26 +9,39 @@ namespace World_Of_Seasons
     internal class Program
     {
         public static Character player = new Character();
+        public static List<Character> charactersInCombat = new List<Character>();
         static void Main(string[] args)
         {
             //hello world
             //this is a line of code to be pushed
             //hello do you see this
-            
-            CreateCharacter();
+
+            Opponents.dummy.hp = 20;
+            Opponents.dummy.speed = 1;
+            Opponents.dummy.attack = 5;
+            Opponents.dummy.magic = 5;
+            charactersInCombat.Add(Opponents.dummy);
+            //might change to be placed better and initialize...
+
+
+            CreateCharacter(player);
+            charactersInCombat.Add(player);
             DisplayInfo(player);
+            DisplayInfo(Opponents.dummy);
+
+            Combat.EnterCombat();
             Console.ReadLine();
 
         }
 
-        public static void CreateCharacter()
+        public static void CreateCharacter(Character character)
         {
             Console.WriteLine("Welcome to Character Creator");
             Console.WriteLine("Enter your name:");
-            player.name = Console.ReadLine();
+            character.name = Console.ReadLine();
             Console.WriteLine("Enter the season you were born in (SPRING, SUMMER, AUTUMN or WINTER):");
             string seasonchoice = Console.ReadLine().ToLower();
-            SeasonChoice(seasonchoice);
+            SeasonChoice(seasonchoice, player);
             Console.WriteLine("Apply your stats: HP, SPEED, ATTACK, MAGIC");
             Console.WriteLine("You have 16, 14, 10 and 8 to apply.");
             Console.WriteLine("Which stat receives 16?");
@@ -50,23 +63,23 @@ namespace World_Of_Seasons
             return;
         }
 
-        public static void SeasonChoice(string seasonchoice)
+        public static void SeasonChoice(string seasonchoice, Character character)
         {
         ASKSEASON: if (seasonchoice == "spring")
             {
-                player.season = seasonchoice;
+                character.season = seasonchoice;
             }
             else if (seasonchoice == "summer")
             {
-                player.season = seasonchoice;
+                character.season = seasonchoice;
             }
             else if (seasonchoice == "autumn")
             {
-                player.season = seasonchoice;
+                character.season = seasonchoice;
             }
             else if (seasonchoice == "winter")
             {
-                player.season = seasonchoice;
+                character.season = seasonchoice;
             }
             else
             {
@@ -76,7 +89,7 @@ namespace World_Of_Seasons
             }
             return;
         }
-        public static void ApplyStat(string stat, int number)
+        public static void ApplyStat(string stat, int number) //should be character not just player?
         {
             ASKSTAT: if (stat == "HP" && player.hp == 0)
             {
@@ -110,6 +123,7 @@ namespace World_Of_Seasons
             Console.WriteLine("SPEED: " + character.speed);
             Console.WriteLine("ATTACK: " + character.attack);
             Console.WriteLine("MAGIC: " + character.magic);
+            Console.ForegroundColor = ConsoleColor.White;
             return;
         }
 
