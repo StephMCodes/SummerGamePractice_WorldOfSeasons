@@ -9,27 +9,36 @@ namespace World_Of_Seasons
     internal class Program
     {
         public static Character player = new Character();
-        public static List<Character> charactersInCombat = new List<Character>();
+        
         static void Main(string[] args)
         {
             //hello world
             //this is a line of code to be pushed
             //hello do you see this
-
+            Opponents.dummy.name = "Training Dummy";
             Opponents.dummy.hp = 20;
             Opponents.dummy.speed = 1;
             Opponents.dummy.attack = 5;
             Opponents.dummy.magic = 5;
-            charactersInCombat.Add(Opponents.dummy);
+            Combat.charactersInCombat.Add(Opponents.dummy);
+            Opponents.punchingbag.name = "Punching Bag";
+            Opponents.punchingbag.hp = 20;
+            Opponents.punchingbag.speed = 2;
+            Opponents.punchingbag.attack = 5;
+            Opponents.punchingbag.magic = 5;
+            Combat.charactersInCombat.Add(Opponents.punchingbag);
             //might change to be placed better and initialize...
 
 
             CreateCharacter(player);
-            charactersInCombat.Add(player);
+            Combat.charactersInCombat.Add(player);
             DisplayInfo(player);
             DisplayInfo(Opponents.dummy);
 
-            Combat.EnterCombat();
+            Combat.ColeCombat();
+            Combat.ColeCombat();
+
+            //Combat.EnterCombat();
             Console.ReadLine();
 
         }
@@ -37,8 +46,14 @@ namespace World_Of_Seasons
         public static void CreateCharacter(Character character)
         {
             Console.WriteLine("Welcome to Character Creator");
-            Console.WriteLine("Enter your name:");
+            ASKNAME: Console.WriteLine("Enter your name:");
             character.name = Console.ReadLine();
+            Console.WriteLine("Your name is " + character.name + ". Is this correct? Enter [n] if not.");
+            char nameCheck = Convert.ToChar(Console.ReadLine().ToLower());
+            if (nameCheck == 'n')
+            {
+                goto ASKNAME;
+            }
             Console.WriteLine("Enter the season you were born in (SPRING, SUMMER, AUTUMN or WINTER):");
             string seasonchoice = Console.ReadLine().ToLower();
             SeasonChoice(seasonchoice, player);

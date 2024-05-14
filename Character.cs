@@ -15,6 +15,7 @@ namespace World_Of_Seasons
         public int speed;
         public int attack;
         public int magic;
+        public int mana = 10; //will increase different amounts based on mag
 
         
     }
