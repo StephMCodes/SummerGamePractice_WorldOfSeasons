@@ -16,27 +16,34 @@ namespace World_Of_Seasons
             //this is a line of code to be pushed
             //hello do you see this
             Opponents.dummy.name = "Training Dummy";
+            Opponents.dummy.hpMax = 20;
             Opponents.dummy.hp = 20;
             Opponents.dummy.speed = 1;
-            Opponents.dummy.attack = 5;
+            Opponents.dummy.speedMax = 1;
+            Opponents.dummy.attack = 2;
             Opponents.dummy.magic = 5;
+            Opponents.dummy.isOpponent = true;
             Combat.charactersInCombat.Add(Opponents.dummy);
             Opponents.punchingbag.name = "Punching Bag";
+            Opponents.punchingbag.hpMax = 20;
             Opponents.punchingbag.hp = 20;
             Opponents.punchingbag.speed = 2;
-            Opponents.punchingbag.attack = 5;
+            Opponents.punchingbag.speedMax = 1;
+            Opponents.punchingbag.attack = 2;
             Opponents.punchingbag.magic = 5;
+            Opponents.punchingbag.isOpponent = true;
             Combat.charactersInCombat.Add(Opponents.punchingbag);
             //might change to be placed better and initialize...
 
 
             CreateCharacter(player);
             Combat.charactersInCombat.Add(player);
-            DisplayInfo(player);
-            DisplayInfo(Opponents.dummy);
+           // DisplayInfo(player);
+           // DisplayInfo(Opponents.dummy);
 
-            Combat.ColeCombat();
-            Combat.ColeCombat();
+            //do while?
+            Combat.EnterCombat();
+            Combat.EnterCombat();
 
             //Combat.EnterCombat();
             Console.ReadLine();
@@ -48,13 +55,16 @@ namespace World_Of_Seasons
             Console.WriteLine("Welcome to Character Creator");
             ASKNAME: Console.WriteLine("Enter your name:");
             character.name = Console.ReadLine();
-            Console.WriteLine("Your name is " + character.name + ". Is this correct? Enter [n] if not.");
-            char nameCheck = Convert.ToChar(Console.ReadLine().ToLower());
-            if (nameCheck == 'n')
+            Console.WriteLine("Your name is " + character.name + ". Is this correct? Enter [no] if not.");
+            string nameCheck = Console.ReadLine().ToLower();
+            if (nameCheck == "no")
             {
                 goto ASKNAME;
             }
-            Console.WriteLine("Enter the season you were born in (SPRING, SUMMER, AUTUMN or WINTER):");
+            else
+            {
+                Console.WriteLine("Enter the season you were born in (SPRING, SUMMER, AUTUMN or WINTER):");
+            }
             string seasonchoice = Console.ReadLine().ToLower();
             SeasonChoice(seasonchoice, player);
             Console.WriteLine("Apply your stats: HP, SPEED, ATTACK, MAGIC");
@@ -75,6 +85,7 @@ namespace World_Of_Seasons
             Console.WriteLine("Welcome, " + player.name + ", member of the " + player.season + "folk.");
             Console.ForegroundColor = ConsoleColor.White;
             Console.WriteLine("Thanks for testing.");
+            Console.WriteLine();
             return;
         }
 
@@ -104,15 +115,17 @@ namespace World_Of_Seasons
             }
             return;
         }
-        public static void ApplyStat(string stat, int number) //should be character not just player?
+        public static void ApplyStat(string stat, int number) //should be character not just player? STILL TO FIX
         {
             ASKSTAT: if (stat == "HP" && player.hp == 0)
             {
                 player.hp = number;
+                player.hpMax = number;
             }
             else if (stat == "SPEED" && player.speed == 0)
             {
                 player.speed = number;
+                player.speedMax = number;
             }
             else if (stat == "ATTACK" && player.attack == 0)
             {
@@ -156,9 +169,13 @@ namespace World_Of_Seasons
             {
                 Console.ForegroundColor = ConsoleColor.Red;
             }
-            else
+            else if (character.season == "winter")
             {
                 Console.ForegroundColor = ConsoleColor.Cyan;
+            }
+            else
+            {
+                Console.ForegroundColor = ConsoleColor.White;
             }
         }
 
