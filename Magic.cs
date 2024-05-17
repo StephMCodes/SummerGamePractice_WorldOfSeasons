@@ -43,7 +43,7 @@ namespace World_Of_Seasons
         {
             if (spell.isAOE == true)
             {
-                foreach (Character person in Combat.charactersInCombat)
+                foreach (Character person in Program.charactersInCombat)
                 {
                     if (person.isOpponent == true)
                     {
@@ -64,7 +64,7 @@ namespace World_Of_Seasons
         {
             if (spell.isAOE == true)
             {
-                foreach (Character person in Combat.charactersInCombat)
+                foreach (Character person in Program.charactersInCombat)
             {
                 if (person.isOpponent == false)
                 {
@@ -86,7 +86,7 @@ namespace World_Of_Seasons
         {
             if (spell.isAOE == true)
             {
-                foreach (Character person in Combat.charactersInCombat)
+                foreach (Character person in Program.charactersInCombat)
                 {
                     if (person.isOpponent == true)
                     {
@@ -99,9 +99,9 @@ namespace World_Of_Seasons
             }
             else
             {
-                foreach (Character person in Combat.charactersInCombat)
+                foreach (Character person in Program.charactersInCombat)
                 {
-                    if (person.isOpponent == true && Combat.target == person.name)
+                    if (person.isOpponent == true && Program.target == person.name)
                     {
                         if (spell.statusEffect == "speed")
                         {
@@ -129,13 +129,15 @@ namespace World_Of_Seasons
                 case "freeze": //maybe a save to unfreeze?
                     Console.WriteLine(character.name + " cast Freeze, reducing enemy speed for " + freeze.spellPower + " points for its next three turns.");
                     ASKTARGET: Console.WriteLine("Who will you target?");
-                    Combat.target = Console.ReadLine();
+                    Program.target = Console.ReadLine();
                     
-                    foreach (Character person in Combat.charactersInCombat)
+                    foreach (Character person in Program.charactersInCombat)
                     {
-                        if (person.isOpponent == true && Combat.target == person.name)
+                        if (person.isOpponent == true && Program.target == person.name)
                         {
-                            StatusSpell(character, freeze.spellPower, freeze, Combat.target);
+                            StatusSpell(character, freeze.spellPower, freeze, Program.target);
+                            Console.WriteLine(person.name + "took " + freeze.spellPower + " to their speed.");
+                            break;
                         }
                         else
                         {

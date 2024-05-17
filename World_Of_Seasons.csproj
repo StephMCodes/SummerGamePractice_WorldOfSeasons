@@ -45,13 +45,15 @@
   <ItemGroup>
     <Compile Include="Character.cs" />
     <Compile Include="Combat.cs" />
+    <Compile Include="Initializing.cs" />
     <Compile Include="Magic.cs" />
-    <Compile Include="Opponents.cs" />
+    <Compile Include="Characters\Opponents\Opponents.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -9,10 +9,10 @@ using System.Threading.Tasks;
 namespace World_Of_Seasons
 {
     
-    internal class Combat
+    static internal class Combat
     {
-        public static List<Character> charactersInCombat = new List<Character>();
-        public static string target;
+      //  public static List<Character> charactersInCombat = new List<Character>();
+     //   public static string target;
         
        // public static List<Character> charactersStillToFight = new List<Character>(charactersInCombat);
 
@@ -21,12 +21,12 @@ namespace World_Of_Seasons
             //lets take every character in battle and prepare a list to give them their turn.
             //they will be removed when they had theirs and the list is remade every round
 
-            List<Character> charactersStillToFight = new List<Character>(charactersInCombat);
+            List<Character> charactersStillToFight = new List<Character>(Program.charactersInCombat);
 
             //lets keep track of all the current speeds and sort/reverse for descending order
             List<int> characterSpeeds = new List<int>();
 
-            foreach (Character character in charactersInCombat)
+            foreach (Character character in Program.charactersInCombat)
             {
                 characterSpeeds.Add(character.speed);
             }
@@ -66,27 +66,10 @@ namespace World_Of_Seasons
 
             }
         
-        //public static void EnterCombat()
-        //{
-        //   foreach (Character character1 in charactersInCombat)
-        //    {
-        //        int speed1 = character1.speed;
-
-        //        foreach (Character character2 in charactersInCombat)
-        //        {
-        //            int speed2 = character2.speed;
-
-        //            if (speed1 > speed2)
-        //            {
-        //                HaveTurn(character1);
-        //            }
-        //            else
-        //            {
-        //                HaveTurn(character2);
-        //            }
-        //        }
-        //    }
-        //}
+        public static void MeleeAttack()
+        {
+           
+        }
 
         public static void HaveTurn(Character character)
         {
@@ -103,6 +86,7 @@ namespace World_Of_Seasons
                 case "attack":
                     //display weapons to choose from
                     Console.WriteLine("You decide to attack!");
+                    MeleeAttack();
 
                     break;
 

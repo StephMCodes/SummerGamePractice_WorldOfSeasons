@@ -10,35 +10,25 @@ namespace World_Of_Seasons
     {
         public static Character player = new Character();
         public static Character friend = new Character();
+        public static List<Character> charactersInCombat = new List<Character>();
+        public static string target;
+     
 
         static void Main(string[] args)
         {
-            //hello world
-            //this is a line of code to be pushed
-            //hello do you see this
-            Opponents.dummy.name = "Training Dummy";
-            Opponents.dummy.hpMax = 20;
-            Opponents.dummy.hp = 20;
-            Opponents.dummy.speed = 1;
-            Opponents.dummy.speedMax = 1;
-            Opponents.dummy.attack = 2;
-            Opponents.dummy.magic = 5;
-            Opponents.dummy.isOpponent = true;
-            Combat.charactersInCombat.Add(Opponents.dummy);
-            Opponents.punchingbag.name = "Punching Bag";
-            Opponents.punchingbag.hpMax = 20;
-            Opponents.punchingbag.hp = 20;
-            Opponents.punchingbag.speed = 2;
-            Opponents.punchingbag.speedMax = 1;
-            Opponents.punchingbag.attack = 2;
-            Opponents.punchingbag.magic = 5;
-            Opponents.punchingbag.isOpponent = true;
-            Combat.charactersInCombat.Add(Opponents.punchingbag);
-            //might change to be placed better and initialize...
+            //FIXED??
+            Initializing.Initialize();
+            
+            foreach (Character person in charactersInCombat)
+            {
+                Console.WriteLine(person.name);
+            }
+            
+           
 
 
             CreateCharacter(player);
-            Combat.charactersInCombat.Add(player);
+            charactersInCombat.Add(player);
 
             Console.WriteLine("Create a team member to cover your weaknesses.");
             //CreateCharacter(friend);
