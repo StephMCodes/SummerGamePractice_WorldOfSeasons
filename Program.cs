@@ -9,7 +9,8 @@ namespace World_Of_Seasons
     internal class Program
     {
         public static Character player = new Character();
-        
+        public static Character friend = new Character();
+
         static void Main(string[] args)
         {
             //hello world
@@ -38,8 +39,13 @@ namespace World_Of_Seasons
 
             CreateCharacter(player);
             Combat.charactersInCombat.Add(player);
-           // DisplayInfo(player);
-           // DisplayInfo(Opponents.dummy);
+
+            Console.WriteLine("Create a team member to cover your weaknesses.");
+            //CreateCharacter(friend);
+           // Combat.charactersInCombat.Add(friend);
+
+            // DisplayInfo(player);
+            // DisplayInfo(Opponents.dummy);
 
             //do while?
             Combat.EnterCombat();
@@ -53,7 +59,7 @@ namespace World_Of_Seasons
         public static void CreateCharacter(Character character)
         {
             Console.WriteLine("Welcome to Character Creator");
-            ASKNAME: Console.WriteLine("Enter your name:");
+            ASKNAME: Console.WriteLine("Enter a name:");
             character.name = Console.ReadLine();
             Console.WriteLine("Your name is " + character.name + ". Is this correct? Enter [no] if not.");
             string nameCheck = Console.ReadLine().ToLower();
@@ -66,23 +72,23 @@ namespace World_Of_Seasons
                 Console.WriteLine("Enter the season you were born in (SPRING, SUMMER, AUTUMN or WINTER):");
             }
             string seasonchoice = Console.ReadLine().ToLower();
-            SeasonChoice(seasonchoice, player);
+            SeasonChoice(seasonchoice, character);
             Console.WriteLine("Apply your stats: HP, SPEED, ATTACK, MAGIC");
             Console.WriteLine("You have 16, 14, 10 and 8 to apply.");
             Console.WriteLine("Which stat receives 16?");
             string statselection = Console.ReadLine().ToUpper();
-            ApplyStat(statselection, 16);
+            ApplyStat(statselection, 16, character);
             Console.WriteLine("Which stat receives 14?");
             statselection = Console.ReadLine().ToUpper();
-            ApplyStat(statselection, 14);
+            ApplyStat(statselection, 14, character);
             Console.WriteLine("Which stat receives 10?");
             statselection = Console.ReadLine().ToUpper();
-            ApplyStat(statselection, 10);
+            ApplyStat(statselection, 10, character);
             Console.WriteLine("Which stat receives 8?");
             statselection = Console.ReadLine().ToUpper();
-            ApplyStat(statselection, 8);
-            ChangeColour(player);
-            Console.WriteLine("Welcome, " + player.name + ", member of the " + player.season + "folk.");
+            ApplyStat(statselection, 8, character);
+            ChangeColour(character);
+            Console.WriteLine("Welcome, " + character.name + ", member of the " + character.season + "folk.");
             Console.ForegroundColor = ConsoleColor.White;
             Console.WriteLine("Thanks for testing.");
             Console.WriteLine();
@@ -115,30 +121,30 @@ namespace World_Of_Seasons
             }
             return;
         }
-        public static void ApplyStat(string stat, int number) //should be character not just player? STILL TO FIX
+        public static void ApplyStat(string stat, int number, Character character) //should be character not just player? STILL TO FIX
         {
-            ASKSTAT: if (stat == "HP" && player.hp == 0)
+            ASKSTAT: if (stat == "HP" && character.hp == 0)
             {
-                player.hp = number;
-                player.hpMax = number;
+                character.hp = number;
+                character.hpMax = number;
             }
-            else if (stat == "SPEED" && player.speed == 0)
+            else if (stat == "SPEED" && character.speed == 0)
             {
-                player.speed = number;
-                player.speedMax = number;
+                character.speed = number;
+                character.speedMax = number;
             }
-            else if (stat == "ATTACK" && player.attack == 0)
+            else if (stat == "ATTACK" && character.attack == 0)
             {
-                player.attack = number;
+                character.attack = number;
             }
-            else if (stat == "MAGIC" && player.magic == 0)
+            else if (stat == "MAGIC" && character.magic == 0)
             {
-                player.magic = number;
+                character.magic = number;
             }
             else
             {
                 Console.WriteLine("Enter a valid stat:");
-                stat = Convert.ToString(Console.ReadLine());
+                stat = Convert.ToString(Console.ReadLine().ToUpper());
                 goto ASKSTAT;
             }
             return; }

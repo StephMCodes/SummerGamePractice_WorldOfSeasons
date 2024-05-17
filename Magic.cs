@@ -99,7 +99,16 @@ namespace World_Of_Seasons
             }
             else
             {
-                //hit current target
+                foreach (Character person in Combat.charactersInCombat)
+                {
+                    if (person.isOpponent == true && Combat.target == person.name)
+                    {
+                        if (spell.statusEffect == "speed")
+                        {
+                            person.speed -= Convert.ToInt32(amount);
+                        }
+                    }
+                }
             }
         }
 
