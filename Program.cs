@@ -8,8 +8,8 @@ namespace World_Of_Seasons
 {
     internal class Program
     {
-        public static Character player = new Character();
-        public static Character friend = new Character();
+        public static Character player = new Character("Default", "None", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, false, "None");
+        public static Character friend = new Character("Default", "None", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, false, "None");
         public static List<Character> charactersInCombat = new List<Character>();
         public static string target;
      

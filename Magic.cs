@@ -10,9 +10,6 @@ namespace World_Of_Seasons
 
     internal class Magic
     {
-        
-
-
         public string spellName;
         public string spellSeason;
         public int spellCost;
@@ -26,6 +23,9 @@ namespace World_Of_Seasons
         public static Magic winterShroud = new Magic("Winter Shroud", "Winter", 5, 5, 101, 5, true, ""); //should always hit
         public static Magic coldWind = new Magic("Cold Wind", "Winter", 2, 4, 95, 1, true, ""); //AOE ATTACK
         public static Magic freeze = new Magic("Freeze", "Winter", 3, 5, 80, 3, false, "speed");                                                                                    //slows down enemy
+
+        public static Magic absorb = new Magic("Absorb", "Autumn", 3, 3, 80, 1, false, "lifesteal");
+
 
         public Magic(string spellName, string spellSeason, int spellCost, int spellPower, int spellHit, int spellTurns, bool isAOE, string statusEffect)
         {
@@ -41,6 +41,12 @@ namespace World_Of_Seasons
 
         public static void DamageSpell(Character character, double amount, Magic spell)
         {
+            if (spell.spellSeason != character.season)
+            {
+                Console.WriteLine("You are the wrong season!");
+                return;
+            } 
+
             if (spell.isAOE == true)
             {
                 foreach (Character person in Program.charactersInCombat)
@@ -58,10 +64,19 @@ namespace World_Of_Seasons
             {
                 //hit current target
             }
+
+            return;
         }
 
         public static void HealSpell(Character character, double amount, Magic spell)
         {
+            if (spell.spellSeason != character.season)
+            {
+                Console.WriteLine("You are the wrong season!");
+                return;
+            }
+
+            
             if (spell.isAOE == true)
             {
                 foreach (Character person in Program.charactersInCombat)
@@ -72,6 +87,7 @@ namespace World_Of_Seasons
                     if (person.hp < person.hpMax)
                     {
                         person.hp = person.hpMax;
+                            return;
                     }
                 }
             }
@@ -79,11 +95,18 @@ namespace World_Of_Seasons
             else
             {
                 //hit current target
+                return;
             }
         }
 
         public static void StatusSpell(Character character, double amount, Magic spell, string target)
         {
+            if (spell.spellSeason != character.season)
+            {
+                Console.WriteLine("You are the wrong season!");
+                return;
+            }
+
             if (spell.isAOE == true)
             {
                 foreach (Character person in Program.charactersInCombat)
@@ -93,6 +116,11 @@ namespace World_Of_Seasons
                         if (spell.statusEffect == "speed")
                         {
                             person.speed -= Convert.ToInt32(amount);
+                        }
+
+                        if (spell.statusEffect == "lifesteal")
+                        {
+                            character.hp += Convert.ToInt32(amount);
                         }
                     }
                 }
@@ -110,6 +138,7 @@ namespace World_Of_Seasons
                     }
                 }
             }
+            return;
         }
 
         public static void CastSpell(string spell, Character character)

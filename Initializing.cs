@@ -8,25 +8,25 @@ namespace World_Of_Seasons
 {
     static internal class Initializing
     {
-        public static Character trainingDummy = new Character();
-        public static Character punchingBag = new Character();
+        public static Character trainingDummy = new Character("Training Dummy", "None", 1, 10, 10, 2, 2, 2, 2, 2, 2, 2, true, "Unarmed");
+        public static Character punchingBag = new Character("Punching Bag", "None", 1, 10, 10, 2, 2, 2, 2, 2, 2, 2, true, "Unarmed");
         public static void Initialize ()
         {
             //constructor?
             Program.charactersInCombat.Add(trainingDummy);
-            trainingDummy.name = "Training Dummy";
-            trainingDummy.hpMax = 10;
-            trainingDummy.hp = trainingDummy.hpMax;
-            trainingDummy.speed = 1;
-            trainingDummy.speedMax = trainingDummy.speed;
-            trainingDummy.isOpponent = true;
+            //trainingDummy.name = "Training Dummy";
+            //trainingDummy.hpMax = 10;
+            //trainingDummy.hp = trainingDummy.hpMax;
+            //trainingDummy.speed = 1;
+            //trainingDummy.speedMax = trainingDummy.speed;
+            //trainingDummy.isOpponent = true;
             Program.charactersInCombat.Add(punchingBag);
-            punchingBag.name = "Punching Bag";
-            punchingBag.hpMax = 10;
-            punchingBag.hp = punchingBag.hpMax;
-            punchingBag.speed = 1;
-            punchingBag.speedMax = punchingBag.speed;
-            punchingBag.isOpponent = true;
+            //punchingBag.name = "Punching Bag";
+            //punchingBag.hpMax = 10;
+            //punchingBag.hp = punchingBag.hpMax;
+            //punchingBag.speed = 1;
+            //punchingBag.speedMax = punchingBag.speed;
+            //punchingBag.isOpponent = true;
 
             //hello world
             //this is a line of code to be pushed
