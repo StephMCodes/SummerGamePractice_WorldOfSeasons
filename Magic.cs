@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 namespace World_Of_Seasons
 {
 
+
     internal class Magic
     {
         public string spellName;
@@ -20,11 +21,13 @@ namespace World_Of_Seasons
         public string statusEffect;
         
 
-        public static Magic winterShroud = new Magic("Winter Shroud", "Winter", 5, 5, 101, 5, true, ""); //should always hit
-        public static Magic coldWind = new Magic("Cold Wind", "Winter", 2, 4, 95, 1, true, ""); //AOE ATTACK
-        public static Magic freeze = new Magic("Freeze", "Winter", 3, 5, 80, 3, false, "speed");                                                                                    //slows down enemy
+        public static Magic winterShroud = new Magic("Winter Shroud", "winter", 5, 5, 101, 5, true, ""); //should always hit
+        public static Magic coldWind = new Magic("Cold Wind", "winter", 2, 4, 95, 1, true, ""); //AOE ATTACK
+        public static Magic freeze = new Magic("Freeze", "winter", 3, 5, 80, 3, false, "speed");                                                                                    //slows down enemy
 
         public static Magic absorb = new Magic("Absorb", "Autumn", 3, 3, 80, 1, false, "lifesteal");
+
+
 
 
         public Magic(string spellName, string spellSeason, int spellCost, int spellPower, int spellHit, int spellTurns, bool isAOE, string statusEffect)
@@ -39,30 +42,104 @@ namespace World_Of_Seasons
             this.statusEffect = statusEffect;
         }
 
+
+
+
         public static void DamageSpell(Character character, double amount, Magic spell)
         {
+          // need to make a spell list, this is goofy
             if (spell.spellSeason != character.season)
             {
-                Console.WriteLine("You are the wrong season!");
+                Console.WriteLine("You are the wrong season to cast this spell!");
+                Combat.HaveTurn(character);
                 return;
-            } 
+            }
+
+            
+            
+            Random rnd = new Random();
+            int hitChance = rnd.Next(101);
+
+            if (hitChance > spell.spellHit)
+            {
+                Console.WriteLine("Your spell missed!");
+                return;
+            }
 
             if (spell.isAOE == true)
             {
+                int enemyCount = 0;
                 foreach (Character person in Program.charactersInCombat)
                 {
                     if (person.isOpponent == true)
                     {
                         person.hp -= Convert.ToInt32(character.magic * amount);
+                        enemyCount++;
                         if (person.hp <= 0)
                         {
-                            Console.WriteLine("Opponent defeated!"); //SPECIFY
+                            Console.ForegroundColor = ConsoleColor.Red;
+                            Console.WriteLine(person.name + " defeated!"); 
+                            Console.ForegroundColor = ConsoleColor.White;
                         }
                     }
                 }
-            } else
+                Console.WriteLine(character.name + " hurt the enemy party for " + (character.magic * amount) + " health points.");
+                if (spell.statusEffect == "lifesteal")
+                {
+                    character.hp += Convert.ToInt32(amount);
+                    Console.WriteLine(character.name + " gained " + (enemyCount * (character.magic * amount)) + " health points.");
+                    if (character.hp > character.hpMax)
+                    {
+                        character.hp = character.hpMax;
+
+                    }
+                }
+            }
+            else
             {
-                //hit current target
+            ASKTARGET: Console.WriteLine("Who will you target?");
+                Program.target = Console.ReadLine();
+                bool validTarget = false;
+                foreach (Character person in Program.charactersInCombat)
+                {
+                    if (person.isOpponent == true && Program.target == person.name)
+                    {
+                        validTarget = true;
+                    }
+                }
+                if (validTarget == false)
+                {
+                    Console.WriteLine("Re-enter a valid option.");
+                    goto ASKTARGET;
+                }
+                foreach (Character person in Program.charactersInCombat)
+
+                {
+                    if (person.name == Program.target)
+                    {
+                        person.hp -= Convert.ToInt32(character.magic * amount);
+                        
+                        if (person.hp <= 0)
+                        {
+                            Console.ForegroundColor = ConsoleColor.Red;
+                            Console.WriteLine(person.name + " defeated!");
+                            Console.ForegroundColor = ConsoleColor.White;
+                        }
+                        break;
+                    }
+                    
+                }
+                Console.WriteLine(character.name + " hurt the enemy for " + (character.magic * amount) + " health points.");
+                if (spell.statusEffect == "lifesteal")
+                {
+                    character.hp += Convert.ToInt32(amount);
+                    Console.WriteLine(character.name + " gained " + character.magic * amount + " health points.");
+                    if (character.hp > character.hpMax)
+                    {
+                        character.hp = character.hpMax;
+
+                    }
+                }
             }
 
             return;
@@ -72,38 +149,85 @@ namespace World_Of_Seasons
         {
             if (spell.spellSeason != character.season)
             {
-                Console.WriteLine("You are the wrong season!");
+                Console.WriteLine("You are the wrong season to cast this spell!");
+                Combat.HaveTurn(character);
                 return;
             }
 
             
+
+
             if (spell.isAOE == true)
             {
                 foreach (Character person in Program.charactersInCombat)
-            {
-                if (person.isOpponent == false)
                 {
-                    person.hp += Convert.ToInt32(character.magic * amount);
-                    if (person.hp < person.hpMax)
+                    if (person.isOpponent == false)
                     {
-                        person.hp = person.hpMax;
-                            return;
+                        person.hp += Convert.ToInt32(character.magic * amount);
+                        if (person.hp > person.hpMax)
+                        {
+                            person.hp = person.hpMax;
+                            
+                        }
                     }
+                   
                 }
-            }
+                Console.WriteLine(character.name + " healed the party for " + character.magic * amount + " health points.");
             }
             else
             {
-                //hit current target
-                return;
+            ASKTARGET: Console.WriteLine("Who will you target?");
+                Program.target = Console.ReadLine();
+                bool validTarget = false;
+                foreach (Character person in Program.charactersInCombat)
+                {
+                    if (person.isOpponent == false && Program.target == person.name)
+                    {
+                        validTarget = true;
+                    }
+                }
+                if (validTarget == false)
+                {
+                    Console.WriteLine("Re-enter a valid option.");
+                    goto ASKTARGET;
+                }
+
+
+                foreach (Character person in Program.charactersInCombat)
+                {
+                    if (person.isOpponent == false && Program.target == person.name)
+                    {
+                        person.hp += Convert.ToInt32(character.magic * amount);
+                        if (person.hp > person.hpMax)
+                        {
+                            person.hp = person.hpMax;
+
+                        }
+                        Console.WriteLine(person.name + " was healed for " + character.magic * amount + " health points.");
+
+                    }
+                   
+                }
+
+                    return;
             }
         }
 
-        public static void StatusSpell(Character character, double amount, Magic spell, string target)
+        public static void StatusSpell(Character character, double amount, Magic spell)
         {
             if (spell.spellSeason != character.season)
             {
-                Console.WriteLine("You are the wrong season!");
+                Console.WriteLine("You are the wrong season to cast this spell!");
+                Combat.HaveTurn(character);
+                return;
+            }
+
+            Random rnd = new Random();
+            int hitChance = rnd.Next(101);
+
+            if (hitChance > spell.spellHit)
+            {
+                Console.WriteLine("Your spell missed!");
                 return;
             }
 
@@ -116,17 +240,35 @@ namespace World_Of_Seasons
                         if (spell.statusEffect == "speed")
                         {
                             person.speed -= Convert.ToInt32(amount);
+                            if (person.speed <=0)
+                            {
+                                person.speed = 1;
+                            }
                         }
 
-                        if (spell.statusEffect == "lifesteal")
-                        {
-                            character.hp += Convert.ToInt32(amount);
-                        }
+                        
                     }
                 }
+                Console.WriteLine("The enemy party got their " + spell.statusEffect + " reduced by " + spell.spellPower + " for " + spell.spellTurns + " turns.");
             }
             else
             {
+            ASKTARGET: Console.WriteLine("Who will you target?");
+                Program.target = Console.ReadLine();
+                bool validTarget = false;
+                foreach (Character person in Program.charactersInCombat)
+                {
+                    if (person.isOpponent == true && Program.target == person.name)
+                    {
+                        validTarget = true;
+                    }
+                }
+                if (validTarget == false)
+                {
+                    Console.WriteLine("Re-enter a valid option.");
+                    goto ASKTARGET;
+                }
+
                 foreach (Character person in Program.charactersInCombat)
                 {
                     if (person.isOpponent == true && Program.target == person.name)
@@ -134,48 +276,87 @@ namespace World_Of_Seasons
                         if (spell.statusEffect == "speed")
                         {
                             person.speed -= Convert.ToInt32(amount);
+                            if (person.speed <= 0)
+                            {
+                                person.speed = 1;
+                            }
+
+                            Console.WriteLine(person.name + " got their speed reduced by " + spell.spellPower + " for " + spell.spellTurns + " turns.");
+
                         }
-                    }
-                }
-            }
-            return;
-        }
-
-        public static void CastSpell(string spell, Character character)
-        {
-            switch (spell) //do rnd hit chance
-            {
-                case "winter shroud":
-                    Console.WriteLine(character.name + " cast Winter Shroud, healing the party for " + character.magic*0.5 + " health points.");
-                    DamageSpell(character, 0.5, winterShroud);
-                    break;
-
-                case "cold wind":
-                    Console.WriteLine(character.name + " cast Cold Wind, damaging the enemy party for " + character.magic * 0.5 + " health points.");
-                    HealSpell(character, 0.5, coldWind);
-                    break;
-
-                case "freeze": //maybe a save to unfreeze?
-                    Console.WriteLine(character.name + " cast Freeze, reducing enemy speed for " + freeze.spellPower + " points for its next three turns.");
-                    ASKTARGET: Console.WriteLine("Who will you target?");
-                    Program.target = Console.ReadLine();
-                    
-                    foreach (Character person in Program.charactersInCombat)
-                    {
-                        if (person.isOpponent == true && Program.target == person.name)
-                        {
-                            StatusSpell(character, freeze.spellPower, freeze, Program.target);
-                            Console.WriteLine(person.name + "took " + freeze.spellPower + " to their speed.");
-                            break;
-                        }
-                        else
+                            else
                         {
                             Console.WriteLine("Re-enter a valid option.");
                             goto ASKTARGET;
                         }
+                
                     }
-                   
+
+                    }
+                }
+            
+            return;
+        }
+
+       
+
+        public static void CastSpell(string spell, Character character)
+        {
+            switch (spell) 
+            {
+                case "winter shroud":
+                    //describe instead of giving numbers. you can do that in the method.
+                    if (character.mana >= winterShroud.spellCost)
+                    {
+                        Console.WriteLine(character.name + " summons a healing, gentle snowfall upon their team.");
+                        character.mana -= winterShroud.spellCost;
+                        HealSpell(character, 0.5, winterShroud);
+                    }
+                    else
+                    {
+                        Console.Clear();
+                        Console.WriteLine(character.name + " does not have enough mana for that!");
+                        Combat.HaveTurn(character);
+                    }
+                    
                     break;
+
+                case "cold wind":
+                    if (character.mana >= coldWind.spellCost)
+                    {
+                        Console.WriteLine(character.name + " brings forth cold winds upon the enemy party.");
+                       DamageSpell(character, 0.5, coldWind);
+                    }
+                    else
+                    {
+                        Console.Clear();
+                        Console.WriteLine(character.name + " does not have enough mana for that!");
+                        Combat.HaveTurn(character);
+                    }
+                    
+                    break;
+
+                case "freeze": //maybe a save to unfreeze?
+                    if (character.mana >= freeze.spellCost)
+                    {
+                        Console.WriteLine(character.name + " cast Freeze, aiming to cover their opponent's legs in ice.");
+                        StatusSpell(character, freeze.spellPower, freeze);
+                        break;
+                    }
+                    else
+                    {
+                        Console.Clear();
+                        Console.WriteLine(character.name + " does not have enough mana for that!");
+                        Combat.HaveTurn(character);
+                    }
+                    break;
+                           
+                    
+
+                    
+                    
+
+                    
             }
         }
     }

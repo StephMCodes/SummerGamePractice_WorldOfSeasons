@@ -75,7 +75,7 @@ namespace World_Of_Seasons
         {
             Program.ChangeColour(character);
             Console.WriteLine("It's " + character.name + "'s turn!");
-            Console.WriteLine("HP: " + character.hp + "/" + character.hpMax);
+            Console.WriteLine("HP: " + character.hp + "/" + character.hpMax + "\tMANA: " + character.mana);
             Console.WriteLine("Attack: " + character.attack + "\tMagic: " + character.magic);
             Console.WriteLine("--------------------------------------------------------------");
             Console.WriteLine("[ATTACK]    [MAGIC]    [ITEMS]    [CHECK]");

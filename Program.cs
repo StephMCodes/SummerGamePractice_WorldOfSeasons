@@ -8,8 +8,8 @@ namespace World_Of_Seasons
 {
     internal class Program
     {
-        public static Character player = new Character("Default", "None", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, false, "None");
-        public static Character friend = new Character("Default", "None", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, false, "None");
+        public static Character player = new Character("Default", "None", 0, 0, 0, 0, 0, 0, 0, 0, 0, 10, 10, false, "None");
+        public static Character friend = new Character("Default", "None", 0, 0, 0, 0, 0, 0, 0, 0, 0, 10, 10, false, "None");
         public static List<Character> charactersInCombat = new List<Character>();
         public static string target;
      
@@ -19,20 +19,23 @@ namespace World_Of_Seasons
             //FIXED??
             Initializing.Initialize();
             
-            foreach (Character person in charactersInCombat)
-            {
-                Console.WriteLine(person.name);
-            }
+           // foreach (Character person in charactersInCombat)
+           // {
+           //     Console.WriteLine(person.name);
+           // }
             
            
 
 
             CreateCharacter(player);
             charactersInCombat.Add(player);
+            Console.ReadKey();
 
             Console.WriteLine("Create a team member to cover your weaknesses.");
-            //CreateCharacter(friend);
-           // Combat.charactersInCombat.Add(friend);
+            Console.ReadKey();
+            CreateCharacter(friend);
+            charactersInCombat.Add(friend);
+            Console.ReadKey();
 
             // DisplayInfo(player);
             // DisplayInfo(Opponents.dummy);
@@ -48,6 +51,7 @@ namespace World_Of_Seasons
 
         public static void CreateCharacter(Character character)
         {
+            Console.Clear();
             Console.WriteLine("Welcome to Character Creator");
             ASKNAME: Console.WriteLine("Enter a name:");
             character.name = Console.ReadLine();
@@ -63,6 +67,8 @@ namespace World_Of_Seasons
             }
             string seasonchoice = Console.ReadLine().ToLower();
             SeasonChoice(seasonchoice, character);
+            Console.WriteLine();
+             
             Console.WriteLine("Apply your stats: HP, SPEED, ATTACK, MAGIC");
             Console.WriteLine("You have 16, 14, 10 and 8 to apply.");
             Console.WriteLine("Which stat receives 16?");
@@ -80,7 +86,7 @@ namespace World_Of_Seasons
             ChangeColour(character);
             Console.WriteLine("Welcome, " + character.name + ", member of the " + character.season + "folk.");
             Console.ForegroundColor = ConsoleColor.White;
-            Console.WriteLine("Thanks for testing.");
+           // Console.WriteLine("Thanks for testing.");
             Console.WriteLine();
             return;
         }
