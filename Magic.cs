@@ -13,27 +13,29 @@ namespace World_Of_Seasons
     {
         public string spellName;
         public string spellSeason;
+        public string spellDesc;
         public int spellCost;
-        public int spellPower;
+        public double spellPower;
         public int spellHit;
         public int spellTurns;
         public bool isAOE;
         public string statusEffect;
         
 
-        public static Magic winterShroud = new Magic("Winter Shroud", "winter", 5, 5, 101, 5, true, ""); //should always hit
-        public static Magic coldWind = new Magic("Cold Wind", "winter", 2, 4, 95, 1, true, ""); //AOE ATTACK
-        public static Magic freeze = new Magic("Freeze", "winter", 3, 5, 80, 3, false, "speed");                                                                                    //slows down enemy
+        public static Magic winterShroud = new Magic("Winter Shroud", "winter", "Heals the party for .5 of magic stat for 5 mana.", 5, 0.5, 101, 5, true, ""); //should always hit
+        public static Magic coldWind = new Magic("Cold Wind", "winter", "Damages the enemy party for .5 of magic stat for 2 mana.", 2, 0.5, 95, 1, true, ""); //AOE ATTACK
+        public static Magic freeze = new Magic("Freeze", "winter", "Lowers target enemy speed by 1x magic stat for 3 mana.", 3, 1, 80, 3, false, "speed");                                                                                    //slows down enemy
 
-        public static Magic absorb = new Magic("Absorb", "Autumn", 3, 3, 80, 1, false, "lifesteal");
-
-
+        public static Magic absorb = new Magic("Absorb", "Autumn", "Drains target enemy's HP by .5x magic stat for 3 mana.", 3, 0.5, 80, 1, false, "lifesteal");
 
 
-        public Magic(string spellName, string spellSeason, int spellCost, int spellPower, int spellHit, int spellTurns, bool isAOE, string statusEffect)
+
+
+        public Magic(string spellName, string spellSeason, string spellDesc, int spellCost, double spellPower, int spellHit, int spellTurns, bool isAOE, string statusEffect)
         {
             this.spellName = spellName;
             this.spellSeason = spellSeason;
+            this.spellDesc = spellDesc;
             this.spellCost = spellCost;
             this.spellPower = spellPower;
             this.spellHit = spellHit;
@@ -124,6 +126,9 @@ namespace World_Of_Seasons
                             Console.ForegroundColor = ConsoleColor.Red;
                             Console.WriteLine(person.name + " defeated!");
                             Console.ForegroundColor = ConsoleColor.White;
+                            Program.charactersInCombat.Remove(person);
+                            person.isDown = true;
+                            // Combat.charactersStillToFight.Remove(person);
                         }
                         break;
                     }
@@ -310,7 +315,7 @@ namespace World_Of_Seasons
                     {
                         Console.WriteLine(character.name + " summons a healing, gentle snowfall upon their team.");
                         character.mana -= winterShroud.spellCost;
-                        HealSpell(character, 0.5, winterShroud);
+                        HealSpell(character, winterShroud.spellPower, winterShroud);
                     }
                     else
                     {
@@ -325,7 +330,7 @@ namespace World_Of_Seasons
                     if (character.mana >= coldWind.spellCost)
                     {
                         Console.WriteLine(character.name + " brings forth cold winds upon the enemy party.");
-                       DamageSpell(character, 0.5, coldWind);
+                       DamageSpell(character, coldWind.spellPower, coldWind);
                     }
                     else
                     {

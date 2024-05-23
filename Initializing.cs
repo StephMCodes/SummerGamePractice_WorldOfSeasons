@@ -8,8 +8,8 @@ namespace World_Of_Seasons
 {
     static internal class Initializing
     {
-        public static Character trainingDummy = new Character("Training Dummy", "None", 1, 10, 10, 2, 2, 2, 2, 2, 2, 2, 2, true, "Unarmed");
-        public static Character punchingBag = new Character("Punching Bag", "None", 1, 10, 10, 2, 2, 2, 2, 2, 2, 2, 2, true, "Unarmed");
+        public static Character trainingDummy = new Character("Training Dummy", "None", 1, 10, 10, 2, 2, 2, 2, 2, 2, 2, 2, true, Weapon.Unarmed, false);
+        public static Character punchingBag = new Character("Punching Bag", "None", 1, 10, 10, 2, 2, 2, 2, 2, 2, 2, 2, true, Weapon.Unarmed, false);
         public static void Initialize ()
         {
             //constructor?

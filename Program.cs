@@ -8,9 +8,15 @@ namespace World_Of_Seasons
 {
     internal class Program
     {
-        public static Character player = new Character("Default", "None", 0, 0, 0, 0, 0, 0, 0, 0, 0, 10, 10, false, "None");
-        public static Character friend = new Character("Default", "None", 0, 0, 0, 0, 0, 0, 0, 0, 0, 10, 10, false, "None");
+        public static Character player = new Character("Default", "None", 0, 0, 0, 0, 0, 0, 0, 0, 0, 10, 10, false, Weapon.Unarmed, false);
+        public static List<Magic> playerMagicList = new List<Magic>();
+    //    public static List<Weapon> playerWeaponList = new List<Weapon>();
+        public static Character friend = new Character("Default", "None", 0, 0, 0, 0, 0, 0, 0, 0, 0, 10, 10, false, Weapon.Unarmed, false);
+        public static List<Magic> friendMagicList = new List<Magic>();
+    //    public static List<Weapon> friendWeaponList = new List<Weapon>();
         public static List<Character> charactersInCombat = new List<Character>();
+        public static List<Magic> teamMagicList = new List<Magic>();
+    //    public static List<Weapon> teamWeaponList = new List<Weapon>();
         public static string target;
      
 
@@ -29,20 +35,31 @@ namespace World_Of_Seasons
 
             CreateCharacter(player);
             charactersInCombat.Add(player);
+            
+            if(player.season=="winter")
+            {
+                playerMagicList.Add(Magic.winterShroud);
+                playerMagicList.Add(Magic.coldWind);
+                playerMagicList.Add(Magic.freeze);
+
+                teamMagicList.Add(Magic.winterShroud);
+                teamMagicList.Add(Magic.coldWind);
+                teamMagicList.Add(Magic.freeze);
+            }
             Console.ReadKey();
 
             Console.WriteLine("Create a team member to cover your weaknesses.");
-            Console.ReadKey();
-            CreateCharacter(friend);
-            charactersInCombat.Add(friend);
-            Console.ReadKey();
+          //  Console.ReadKey();
+          //  CreateCharacter(friend);
+         //   charactersInCombat.Add(friend);
+           
 
             // DisplayInfo(player);
             // DisplayInfo(Opponents.dummy);
 
             //do while?
             Combat.EnterCombat();
-            Combat.EnterCombat();
+          //  Combat.EnterCombat();
 
             //Combat.EnterCombat();
             Console.ReadLine();
@@ -70,19 +87,19 @@ namespace World_Of_Seasons
             Console.WriteLine();
              
             Console.WriteLine("Apply your stats: HP, SPEED, ATTACK, MAGIC");
-            Console.WriteLine("You have 16, 14, 10 and 8 to apply.");
+            Console.WriteLine("You have 16, 14, 12 and 10 to apply.");
             Console.WriteLine("Which stat receives 16?");
             string statselection = Console.ReadLine().ToUpper();
             ApplyStat(statselection, 16, character);
             Console.WriteLine("Which stat receives 14?");
             statselection = Console.ReadLine().ToUpper();
             ApplyStat(statselection, 14, character);
+            Console.WriteLine("Which stat receives 12?");
+            statselection = Console.ReadLine().ToUpper();
+            ApplyStat(statselection, 12, character);
             Console.WriteLine("Which stat receives 10?");
             statselection = Console.ReadLine().ToUpper();
             ApplyStat(statselection, 10, character);
-            Console.WriteLine("Which stat receives 8?");
-            statselection = Console.ReadLine().ToUpper();
-            ApplyStat(statselection, 8, character);
             ChangeColour(character);
             Console.WriteLine("Welcome, " + character.name + ", member of the " + character.season + "folk.");
             Console.ForegroundColor = ConsoleColor.White;

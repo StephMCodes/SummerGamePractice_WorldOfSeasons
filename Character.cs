@@ -22,11 +22,12 @@ namespace World_Of_Seasons
         public int mana = 10; //will increase different amounts based on mag
         public int manaMax = 10;
         public bool isOpponent;
-        public string weapon;
+        public Weapon weapon;
+        public bool isDown;
 
 
 
-        public Character(string name, string season, int level, int hp, int hpMax, int speed, int speedMax, int attack, int attackMax, int magic, int magicMax, int mana, int manaMax, bool isOpponent, string weapon)
+        public Character(string name, string season, int level, int hp, int hpMax, int speed, int speedMax, int attack, int attackMax, int magic, int magicMax, int mana, int manaMax, bool isOpponent, Weapon weapon, bool isDown)
         {
             this.name = name;
             this.season = season;
@@ -43,6 +44,7 @@ namespace World_Of_Seasons
             this.manaMax = manaMax;
             this.isOpponent = isOpponent;
             this.weapon = weapon;
+            this.isDown = isDown;
         }
     }
 

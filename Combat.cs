@@ -42,6 +42,12 @@ namespace World_Of_Seasons
                 {
                     if (character.speed == speed)
                     {
+                        if (character.isDown==true)
+                        {
+                            Console.WriteLine(character.name + "is down and cannot continue to fight!");
+                            break;
+                        }
+
                         if (character.isOpponent == false)
                         {
                             Console.WriteLine(character.name + "'s turn! FIGHT ON!");
@@ -65,15 +71,107 @@ namespace World_Of_Seasons
             }
 
             }
-        
-        public static void MeleeAttack()
+
+        public static void CheckTeamSpells()
         {
-           
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.WriteLine("You check your spells.");
+            Console.WriteLine("--------------------------------------------------------------");
+            foreach (Magic spell in Program.teamMagicList)
+            {
+                if (spell.spellSeason== "spring")
+                {
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.WriteLine(spell.spellName);
+                    Console.WriteLine(spell.spellDesc);
+                    Console.ForegroundColor = ConsoleColor.White;
+                }
+
+                if (spell.spellSeason == "summer")
+                {
+                    Console.ForegroundColor = ConsoleColor.Yellow;
+                    Console.WriteLine(spell.spellName);
+                    Console.WriteLine(spell.spellDesc);
+                    Console.ForegroundColor = ConsoleColor.White;
+                }
+
+                if (spell.spellSeason == "autumn")
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine(spell.spellName);
+                    Console.WriteLine(spell.spellDesc);
+                    Console.ForegroundColor = ConsoleColor.White;
+                }
+
+                if (spell.spellSeason == "winter")
+                {
+                    Console.ForegroundColor = ConsoleColor.Cyan;
+                    Console.WriteLine(spell.spellName);
+                    Console.WriteLine(spell.spellDesc);
+                    Console.ForegroundColor = ConsoleColor.White;
+                }
+
+            }
+
+            Console.WriteLine("--------------------------------------------------------------");
+
         }
+
+        public static void MeleeAttack(Character character)
+        {
+        ASKTARGET: Console.WriteLine("Who will you target?");
+            Program.target = Console.ReadLine();
+            bool validTarget = false;
+            foreach (Character person in Program.charactersInCombat)
+            {
+                if (person.isOpponent == true && Program.target == person.name)
+                {
+                    validTarget = true;
+                }
+            }
+            if (validTarget == false)
+            {
+                Console.WriteLine("Re-enter a valid option.");
+                goto ASKTARGET;
+            }
+
+            foreach (Character person in Program.charactersInCombat)
+            {
+                if (person.isOpponent == true && Program.target == person.name)
+                {
+
+                    Random rnd = new Random();
+                    int hitChance = rnd.Next(101);
+
+                    if (hitChance > character.weapon.hitChance)
+                    {
+                        Console.WriteLine("Your attack missed!");
+                        return;
+                    }
+                    Console.WriteLine(character.name + "attacks with their " + character.weapon.name + " for " + character.attack * character.weapon.power + " damage!");
+                    person.hp -= Convert.ToInt32(character.attack * character.weapon.power);
+                    if (person.hp <= 0)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine(person.name + " defeated!");
+                        Console.ForegroundColor = ConsoleColor.White;
+                        Program.charactersInCombat.Remove(person);
+                        person.isDown = true;
+                        // Combat.charactersStillToFight.Remove(person);
+                    }
+                    return;
+                }
+                else
+                {
+                    Console.WriteLine("Re-enter a valid option.");
+                    goto ASKTARGET;
+                }
+            }
+            }
 
         public static void HaveTurn(Character character)
         {
-            Program.ChangeColour(character);
+            STARTTURN: Program.ChangeColour(character);
             Console.WriteLine("It's " + character.name + "'s turn!");
             Console.WriteLine("HP: " + character.hp + "/" + character.hpMax + "\tMANA: " + character.mana);
             Console.WriteLine("Attack: " + character.attack + "\tMagic: " + character.magic);
@@ -84,37 +182,86 @@ namespace World_Of_Seasons
             switch (turnChoice)
             {
                 case "attack":
-                    //display weapons to choose from
+                    Console.Clear();
+                    //display weapons to choose from?
                     Console.WriteLine("You decide to attack!");
-                    MeleeAttack();
+                    MeleeAttack(character);
+                    character.mana++;
+                    if (character.mana> character.manaMax)
+                    {
+                        character.mana = character.manaMax;
+                    }
 
                     break;
 
                 case "magic":
-                    ASKSPELL: Console.WriteLine("Which spell will you cast? Enter [list] to access your spellbook.");
+                ASKSPELL: Console.Clear();
+                    Console.WriteLine("Which spell will you cast? Enter [list] to access the team's spellbook.");
                     string listCheck = Console.ReadLine().ToLower();
+                    
                     if (listCheck == "list")
                     {
-                        Console.WriteLine("You check your spells.");
+                        CheckTeamSpells();
+                        Console.WriteLine("Enter anything to return.");
                         Console.ReadKey();
+                        Console.Clear();
                         goto ASKSPELL;
 
                     }
                     else
                     {
-                        Magic.CastSpell(listCheck, character);
+                        foreach (Magic spell in Program.teamMagicList)
+                        {
+                            if (spell.spellName == listCheck)
+                            {
+                                Magic.CastSpell(listCheck, character);
+                                break;
+                            }
+                        }
+                        Console.WriteLine("Enter a valid spell!");
+                        goto ASKSPELL;
                     }
-                    //display spells to choose from if wanted or just cast
-                    break;
+                    
+                   
+                   
 
                 case "items":
                     Console.Clear();
                     Console.WriteLine("Enter the name of an item to use it or [cancel] to return.");
-                    //if cancel goto start of turn
+                    string checkItems = Console.ReadLine().ToLower();
+                    
+                    if (checkItems == "cancel")
+                    { goto STARTTURN; }
                     break;
 
                 case "check":
-                    Console.WriteLine("Enter a name to check stats and abilities in full detail.");
+                    Console.Clear();
+                    ASKCHOICE: Console.WriteLine("Enter a name to check stats in full detail or [cancel] to return.");
+                    string checkChoice = Console.ReadLine().ToLower();
+
+                    if(checkChoice == "cancel")
+                    { goto STARTTURN; }
+                    
+                    foreach (Character tocheck in Program.charactersInCombat)
+                    {
+                        if (checkChoice == tocheck.name)
+                        {
+                            Program.ChangeColour(tocheck);
+                            Console.WriteLine(tocheck.name + " of the " + tocheck.season + "folk.");
+                            Console.WriteLine("HP: " + tocheck.hp + "/" + tocheck.hpMax + "\tMANA: " + tocheck.mana);
+                            Console.WriteLine("Attack: " + tocheck.attack + "\tMagic: " + tocheck.magic);
+                            Console.WriteLine(tocheck.weapon);
+                            Program.ChangeColour(character);
+
+                        }
+                        else
+                        {
+                            Console.WriteLine("Enter a valid name.");
+                            goto ASKCHOICE;
+                        }
+
+                    }
+
                     break;
             }
 
