@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Media;
 using System.Runtime.InteropServices;
+using System.Runtime.Remoting.Messaging;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -148,7 +149,7 @@ namespace World_Of_Seasons
                         Console.WriteLine("Your attack missed!");
                         return;
                     }
-                    Console.WriteLine(character.name + "attacks with their " + character.weapon.name + " for " + character.attack * character.weapon.power + " damage!");
+                    Console.WriteLine(character.name + " attacks with their " + character.weapon.name + " for " + character.attack * character.weapon.power + " damage!");
                     person.hp -= Convert.ToInt32(character.attack * character.weapon.power);
                     if (person.hp <= 0)
                     {
@@ -159,6 +160,7 @@ namespace World_Of_Seasons
                         person.isDown = true;
                         // Combat.charactersStillToFight.Remove(person);
                     }
+                    else { Console.WriteLine(person.name + "'s HP:" + person.hp); }
                     return;
                 }
                 else
@@ -181,16 +183,21 @@ namespace World_Of_Seasons
             string turnChoice = Console.ReadLine().ToLower();
             switch (turnChoice)
             {
+                default:
+                    Console.WriteLine("Enter a valid option!");
+                    goto STARTTURN;
+
                 case "attack":
                     Console.Clear();
                     //display weapons to choose from?
                     Console.WriteLine("You decide to attack!");
-                    MeleeAttack(character);
                     character.mana++;
-                    if (character.mana> character.manaMax)
+                    if (character.mana > character.manaMax)
                     {
                         character.mana = character.manaMax;
                     }
+                    MeleeAttack(character);
+                   
 
                     break;
 
@@ -199,6 +206,17 @@ namespace World_Of_Seasons
                     Console.WriteLine("Which spell will you cast? Enter [list] to access the team's spellbook.");
                     string listCheck = Console.ReadLine().ToLower();
                     
+                    foreach (Magic spell in Program.teamMagicList)
+                    {
+                        if (spell.spellName == listCheck)
+                        {
+                            Magic.CastSpell(listCheck, character);
+                           break;
+                        } 
+                    }
+
+
+
                     if (listCheck == "list")
                     {
                         CheckTeamSpells();
@@ -210,17 +228,12 @@ namespace World_Of_Seasons
                     }
                     else
                     {
-                        foreach (Magic spell in Program.teamMagicList)
-                        {
-                            if (spell.spellName == listCheck)
-                            {
-                                Magic.CastSpell(listCheck, character);
-                                break;
-                            }
-                        }
+
                         Console.WriteLine("Enter a valid spell!");
+                        listCheck = Console.ReadLine().ToLower();
                         goto ASKSPELL;
                     }
+                    
                     
                    
                    
@@ -236,7 +249,30 @@ namespace World_Of_Seasons
 
                 case "check":
                     Console.Clear();
-                    ASKCHOICE: Console.WriteLine("Enter a name to check stats in full detail or [cancel] to return.");
+                   
+                    Console.WriteLine("ALLIES:");
+                    foreach (Character character2 in Program.charactersInCombat)
+                    {
+                        if (character2.isOpponent==false)
+                        {
+                           Program.ChangeColour(character2);
+                           Console.WriteLine(character2.name);
+                           Program.ChangeColour(character);
+                        }
+                    }
+
+                    Console.WriteLine("OPPONENTS:");
+                    foreach (Character character2 in Program.charactersInCombat)
+                    {
+                        if (character2.isOpponent == true)
+                        {
+                            Program.ChangeColour(character2);
+                            Console.WriteLine(character2.name);
+                            Program.ChangeColour(character);
+                        }
+                    }
+
+                ASKCHOICE: Console.WriteLine("Enter a name to check stats in full detail or [cancel] to return.");
                     string checkChoice = Console.ReadLine().ToLower();
 
                     if(checkChoice == "cancel")
@@ -252,6 +288,8 @@ namespace World_Of_Seasons
                             Console.WriteLine("Attack: " + tocheck.attack + "\tMagic: " + tocheck.magic);
                             Console.WriteLine(tocheck.weapon);
                             Program.ChangeColour(character);
+                            Console.ReadKey();
+                            goto ASKCHOICE;
 
                         }
                         else
@@ -266,8 +304,9 @@ namespace World_Of_Seasons
             }
 
             Console.ForegroundColor = ConsoleColor.White;
+         //?   return;
         }
 
-
+        
     }
 }

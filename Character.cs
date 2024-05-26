@@ -46,6 +46,16 @@ namespace World_Of_Seasons
             this.weapon = weapon;
             this.isDown = isDown;
         }
+
+        public static void Dialogue(Character character, string dialogue)
+        {
+            Console.WriteLine("---------------");
+            Program.ChangeColour(character);
+            Console.WriteLine(character.name);
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.WriteLine("---------------");
+            Console.WriteLine(">    '" + dialogue+"'");
+        }
     }
 
    

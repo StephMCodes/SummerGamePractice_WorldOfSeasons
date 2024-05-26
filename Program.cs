@@ -35,6 +35,8 @@ namespace World_Of_Seasons
 
             CreateCharacter(player);
             charactersInCombat.Add(player);
+
+            Character.Dialogue(player, "Hey, a Training Dummy and a Punching Bag to beat up!");
             
             if(player.season=="winter")
             {
@@ -59,7 +61,11 @@ namespace World_Of_Seasons
 
             //do while?
             Combat.EnterCombat();
-          //  Combat.EnterCombat();
+            Combat.EnterCombat();
+            Combat.EnterCombat();
+            Combat.EnterCombat();
+
+            //  Combat.EnterCombat();
 
             //Combat.EnterCombat();
             Console.ReadLine();
